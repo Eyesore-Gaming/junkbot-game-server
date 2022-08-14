@@ -11,5 +11,6 @@ export default {
   transform: {
     '^.+\\.ts?$': 'ts-jest'
   },
-  transformIgnorePatterns: ['<rootDir>/node_modules/']
+  transformIgnorePatterns: ['node_modules/'],
+  modulePathIgnorePatterns: ['dist/']
 }
