@@ -23,3 +23,4 @@ _For module versions, see package.json_
 - Create env variable class / handler
 - Determine logging solution (could use the one from MazeMaster?)
 - Integrate logging solution
+- Integrate SonarCloud (james)
