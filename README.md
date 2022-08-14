@@ -13,3 +13,13 @@ ts-jest (unit testing)
 ts-standard (linting)
 
 _For module versions, see package.json_
+
+## TODO
+- Copy this stuff to Trello...
+- Create route handler
+- Add Socket IO (derald?)
+- Add database integration?
+- Github Actions (james)
+- Create env variable class / handler
+- Determine logging solution (could use the one from MazeMaster?)
+- Integrate logging solution
