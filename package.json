@@ -1,0 +1,29 @@
+{
+  "name": "junkbot-game-server",
+  "description": "A Node-based server for the Junkbot game",
+  "version": "1.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eyesore-Gaming/junkbot-game-server.git"
+  },
+  "author": "Eyesore Gaming",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eyesore-Gaming/junkbot-game-server/issues"
+  },
+  "homepage": "https://github.com/Eyesore-Gaming/junkbot-game-server#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.6",
+    "ts-jest": "^28.0.7",
+    "ts-standard": "^11.0.0",
+    "typescript": "^4.7.4"
+  }
+}
