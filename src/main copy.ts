@@ -7,6 +7,9 @@ dotenv.config()
 // express module used for basic HTTP communication
 const app: Express = express()
 
+const username = 'myname'
+const password = 'whatever'
+
 // load some environment variables
 const name: string = process.env.NAME === undefined ? 'CHECK ENV VAR "NAME"' : process.env.NAME
 const version: string = process.env.VERSION === undefined ? 'CHECK ENV VAR "VERSION"' : process.env.VERSION
@@ -14,6 +17,7 @@ const port: number = Number.parseInt(process.env.PORT === undefined ? '8080' : p
 
 app.listen(port, () => {
   console.log(`${name} v${version} listening on ${port}`)
+  console.log(`${username}:${password}`)
 })
 
 app.get('/', (req: Request, res: Response) => {
