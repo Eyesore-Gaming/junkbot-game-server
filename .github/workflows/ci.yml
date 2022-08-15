@@ -19,7 +19,7 @@ jobs:
       run: npm install
     - name: Run linter (ts-standard)
       run: npx ts-standard
-    - name: Execute Tests and Coverage ('npm run coverage')
+    - name: Execute Tests and Coverage ('npm test')
       run: npm test
     - name: Transpile Typescript (tsc)
       run: tsc --build --verbose
