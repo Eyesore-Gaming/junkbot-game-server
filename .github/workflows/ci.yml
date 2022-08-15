@@ -28,6 +28,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Sonar Build Breaker
+      uses: jkumar19/sonar-build-breaker@v1.0.0
+      with:
+        sonar_url: "https://sonarcloud.io"
+        sonar_branch: "dev"
+        sonar_token: ${{ secrets.SONAR_TOKEN }}
+        project_key: "Eyesore-Gaming_junkbot-game-server"
     - name: Clean up dist folder (?) 
       run: ls ./dist
     - name: Deploy dist to server(s) (?) 
