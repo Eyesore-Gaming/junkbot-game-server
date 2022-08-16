@@ -1,11 +1,17 @@
 import { IComponent } from './IComponent'
 
 export class ComponentManager {
-  subscribeEntity (id: number, component: IComponent, params: any): void {
-    component.sparseArray[id] = params
-    const index = component.denseArray.indexOf(id)
-    if (index === -1) {
-      component.denseArray.push(id)
+  components: IComponent[]
+
+  subscribeEntity (id: number, params: any[], ...components: IComponent[]): void {
+    let paramIndex = 0
+    for (const component of components) {
+      component.sparseArray[id] = params[paramIndex]
+      const index = component.denseArray.indexOf(id)
+      if (index === -1) {
+        component.denseArray.push(id)
+      }
+      paramIndex++
     }
   }
 
