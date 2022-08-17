@@ -1,29 +1,62 @@
-import express, { Express, Request, Response } from 'express'
-import dotenv from 'dotenv'
+import express, { Express } from 'express'
+import compression from 'compression'
+import { hostname } from 'os'
+import { Server } from 'http'
+import { router } from './router.js'
+import { Config } from './Config.js'
+import { Logger } from './Logger.js'
 
-// load local config from .env file
-dotenv.config()
-
-// express module used for basic HTTP communication
+let httpServer: Server
+const FILE_NAME = 'main.ts' // better than hacking __filename for ES Modules
 const app: Express = express()
+const config: Config = Config.getInstance() // wraps up environment config variables
 
-// load some environment variables
-const name: string = process.env.NAME === undefined ? 'CHECK ENV VAR "NAME"' : process.env.NAME
-const version: string = process.env.VERSION === undefined ? 'CHECK ENV VAR "VERSION"' : process.env.VERSION
-const port: number = Number.parseInt(process.env.PORT === undefined ? '8080' : process.env.PORT)
+const logger = Logger.getInstance()
+logger.info(FILE_NAME, '', `Logger initialized, current log level: ${config.LogLevel}`)
 
-app.listen(port, () => {
-  console.log(`${name} v${version} listening on ${port}`)
+// start the server
+launchExpress()
+
+// launch the express server
+function launchExpress (): void {
+  app.use(compression()) // enable http compression middleware
+
+  // set up the base router
+  app.use('/', router)
+
+  // and start the httpServer - starts the service
+  httpServer = app.listen(config.HttpPort, () => {
+    logger.info(FILE_NAME, 'launchExpress()', `${config.AppName} ${config.AppVersion} is listening -> http://${hostname()}:${config.HttpPort}`)
+  })
+}
+
+// Gracefully shutdown the http server
+function doShutdown (): void {
+  if (httpServer.listening) {
+    logger.info(FILE_NAME, 'doShutDown()', 'Stopping httpServer...')
+    httpServer.close()
+  } else {
+    logger.info(FILE_NAME, 'doShutDown()', 'httpServer was not listening.')
+  }
+
+  logger.info(FILE_NAME, 'doShutDown()', 'Shutdown complete - exiting process... Goodbye.')
+  process.exit(0)
+}
+
+/**
+ * Watch for SIGINT (process interrupt signal) and trigger shutdown
+ */
+process.on('SIGINT', function onSigInt () {
+  // all done, close the db connection
+  logger.info(FILE_NAME, 'onSigInt()', 'Got SIGINT - Shutting down...')
+  doShutdown()
 })
 
-// TODO: placeholder "hello world" route - need to add a robust router
-app.get('/', (req: Request, res: Response) => {
-  console.log(`Request URL: ${req.url}`)
-  res.send('Hello from Junkbot Game Server')
-})
-
-// Catch all unhandled routes
-app.get('*', (req: Request, res: Response) => {
-  console.log(`Request URL: ${req.url}`)
-  res.status(404).send('This is not the page you are looking for... Move along. Move along.')
+/**
+ * Watch for SIGTERM (process terminate signal) and trigger shutdown
+ */
+process.on('SIGTERM', function onSigTerm () {
+  // all done, close the db connection
+  logger.info(FILE_NAME, 'onSigTerm()', 'Got SIGTERM - Shutting down...')
+  doShutdown()
 })

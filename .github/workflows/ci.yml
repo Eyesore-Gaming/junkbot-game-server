@@ -5,29 +5,35 @@ on:
   push:
 
 jobs:
-  Continuous-Integration:
-    runs-on: ubuntu-18.04
+  validate:
+    runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Use Node.js 16.16.0
+
+    - name: Setup Node.js 16.x
       uses: actions/setup-node@v1
       with:
-        node-version: '16.16.0'
-    - name: Install Modules ('npm install')
+        node-version: '16.x'
+        
+    - name: Full Install (npm install)
       run: npm install
-    - name: Run linter (ts-standard)
-      run: npx ts-standard
-    - name: Execute Tests and Coverage ('npm test')
-      run: npm test
-    - name: Transpile Typescript (tsc)
-      run: tsc --build --verbose
-    - name: SonarCloud Scan
+
+    - name: Execute Linter (ts-standard)
+      run: npm run lint
+
+    - name: Execute Unit Tests (jest)
+      run: npm run test
+
+    - name: Transpile to Javascript (tsc)
+      run: npm run build
+
+    - name: Sonar Scan
       uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
     - name: Sonar Build Breaker
       uses: jkumar19/sonar-build-breaker@v1.0.0
       with:
@@ -35,7 +41,52 @@ jobs:
         sonar_branch: "dev"
         sonar_token: ${{ secrets.SONAR_TOKEN }}
         project_key: "Eyesore-Gaming_junkbot-game-server"
-    - name: Clean up dist folder (?) 
-      run: ls ./dist
-    - name: Deploy dist to server(s) (?) 
-      run: ls ./dist/src
+
+    - name: Clear node-modules
+      run: rm -rf ./node_modules
+
+    - name: Reinstall with npm --only=prod
+      run: npm i --only=prod
+
+    - name: Clear non-prod files
+      run: | 
+        rm -rf ./coverage
+        rm -rf ./dist/test
+        rm -rf ./src
+        rm -rf ./test
+        rm ./jest.config.js
+        rm ./sonar-project.properties
+
+    - name: Compress release artifacts (TODO -- Minified dist only)
+      run: zip release.zip ./* -r
+
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v2
+      with:
+        name: node-app
+        path: release.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: validate
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifacts from 'validate' job
+        uses: actions/download-artifact@v2
+        with:
+          name: node-app
+
+      - name: Uncompress release artifacts
+        run: unzip release.zip
+
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'junkbot-game-server'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D058253CA8D54654BE629225DB1CB6B6 }}
+          package: .
