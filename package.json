@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node dist/src/main.js",
+    "lint": "npx ts-standard",
     "test": "npx jest",
     "build": "npx tsc"
   },

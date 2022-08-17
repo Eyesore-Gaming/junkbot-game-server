@@ -16,12 +16,17 @@ jobs:
       with:
         node-version: '16.x'
         
-    - name: Install, Lint, Test, and Build
-      run: |
-        npm install
-        npx ts-standard
-        npm run test --if-present
-        npm run build --if-present
+    - name: Full Install (npm install)
+      run: npm install
+
+    - name: Execute Linter (ts-standard)
+      run: npm run lint
+
+    - name: Execute Unit Tests (jest)
+      run: npm run test
+
+    - name: Transpile to Javascript (tsc)
+      run: npm run build
 
     - name: Sonar Scan
       uses: sonarsource/sonarcloud-github-action@master
@@ -49,7 +54,7 @@ jobs:
         rm -rf ./dist/test
         rm -rf ./src
         rm -rf ./test
-        rm ./jest.config
+        rm ./jest.config.js
         rm ./sonar-project.properties
 
     - name: Compress release artifacts (TODO -- Minified dist only)
