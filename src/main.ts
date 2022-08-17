@@ -18,12 +18,12 @@ app.listen(port, () => {
 
 // TODO: placeholder "hello world" route - need to add a robust router
 app.get('/', (req: Request, res: Response) => {
-  console.log(`Request URL: ${req.url}`)
-  res.send('Hello from Junkbot Game Server')
+  console.log(`main.ts -> req.url=${req.url}`)
+  res.send(`Hello from ${name}, ${version}`)
 })
 
 // Catch all unhandled routes
 app.get('*', (req: Request, res: Response) => {
-  console.log(`Request URL: ${req.url}`)
-  res.status(404).send('This is not the page you are looking for... Move along. Move along.')
+  console.log(`main.ts -> req.url=${req.url}`)
+  res.status(404).send('<img src="https://i.kym-cdn.com/photos/images/newsfeed/000/915/056/50e.jpg" alt="Page Not Found">')
 })
