@@ -5,7 +5,7 @@ dotenv.config() // load local config from .env file (if local)
 
 const config: Config = Config.getInstance()
 const appName: string = 'Junkbot Game Server'
-const appVersion: string = '1.0.0'
+const appVersion: string = '0.1.0'
 const appHttpPort: number = 8080
 
 test(`Initial config.AppName should be ${appName}`, () => {
