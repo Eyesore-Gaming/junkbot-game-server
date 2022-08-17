@@ -1,11 +1,17 @@
 import { IComponent } from './IComponent'
 
 export class ComponentManager {
-  subscribeEntity (id: number, component: IComponent, params: any): void {
-    component.sparseArray[id] = params
-    const index = component.denseArray.indexOf(id)
-    if (index === -1) {
-      component.denseArray.push(id)
+  components: Map<string, IComponent> = new Map<string, IComponent>()
+
+  subscribeEntity (id: number, params: any[], ...components: IComponent[]): void {
+    let paramIndex = 0
+    for (const component of components) {
+      component.sparseArray[id] = params[paramIndex]
+      const index = component.denseArray.indexOf(id)
+      if (index === -1) {
+        component.denseArray.push(id)
+      }
+      paramIndex++
     }
   }
 
@@ -35,7 +41,9 @@ export class ComponentManager {
     // After the component with the fewest subscribers is found, iterate through the other components and remove the entities that don't have the other componenets
     let queryList: number[] = Object.assign([], shortestComponent.denseArray)
     for (const c of components) {
-      queryList = queryList.filter(Set.prototype.has, new Set(c.denseArray))
+      if (c !== shortestComponent) {
+        queryList = queryList.filter(Set.prototype.has, new Set(c.denseArray))
+      }
     }
     return queryList
   }
