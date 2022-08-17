@@ -12,3 +12,5 @@ router.get('/probes/ready', routes.readinessProbe)
 
 // all other content, including file requests - will return 404 if no route/file
 router.get('/*', routes.serveFile)
+
+export default router

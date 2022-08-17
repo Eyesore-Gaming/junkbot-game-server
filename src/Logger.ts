@@ -80,7 +80,7 @@ export class Logger {
 
 // returns the current timestamp
 function getTimeStamp(): string {
-  var dt = new Date();
+  let dt = new Date();
   return dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString();
 }
 
