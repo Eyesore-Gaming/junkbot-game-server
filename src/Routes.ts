@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { Config } from './Config.js'
+import { Config } from './Config'
 import path from 'path'
 import fs from 'fs'
-import { Logger } from './Logger.js'
+import { Logger } from './Logger'
 
 const config: Config = Config.getInstance() // wraps up environment config variables
 const logger: Logger = Logger.getInstance() // custom logger

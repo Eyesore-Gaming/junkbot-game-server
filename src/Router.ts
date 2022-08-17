@@ -1,4 +1,4 @@
-import * as routes from './routes.js'
+import * as routes from './routes'
 import express from 'express'
 
 export const router = express.Router()

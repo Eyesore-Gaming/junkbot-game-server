@@ -2,9 +2,9 @@ import express, { Express } from 'express'
 import compression from 'compression'
 import { hostname } from 'os'
 import { Server } from 'http'
-import { router } from './router.js'
-import { Config } from './Config.js'
-import { Logger } from './Logger.js'
+import { router } from './router'
+import { Config } from './Config'
+import { Logger } from './Logger'
 
 let httpServer: Server
 const FILE_NAME = 'main.ts' // better than hacking __filename for ES Modules
