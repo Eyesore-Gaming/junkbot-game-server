@@ -33,6 +33,9 @@ jobs:
     - name: Execute Unit Tests (jest)
       run: npm run test
 
+    - name: Check TSC node-version
+      run: tsc --version
+
     - name: Transpile to Javascript (tsc)
       run: npm run build
 
