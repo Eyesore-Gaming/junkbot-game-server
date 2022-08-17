@@ -1,9 +1,9 @@
 import express from 'express';
 import compression from 'compression';
 import { hostname } from 'os';
-import { router } from './router';
 import { Config } from './Config';
 import { Logger } from './Logger';
+import { router } from './router';
 let httpServer;
 const FILE_NAME = 'main.ts';
 const app = express();
