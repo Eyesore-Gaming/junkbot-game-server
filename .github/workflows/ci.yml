@@ -37,13 +37,10 @@ jobs:
         sonar_token: ${{ secrets.SONAR_TOKEN }}
         project_key: "Eyesore-Gaming_junkbot-game-server"
 
-    - name: Clean up dist folder (?) 
+    - name: TODO -- Create minified dist folder 
       run: ls ./dist
 
-    - name: Deploy dist to server(s) (?) 
-      run: ls ./dist/src
-
-    - name: Compress release artifacts
+    - name: Compress release artifacts (TODO -- Minified dist only)
       run: zip release.zip ./* -r
 
     - name: Upload artifact for deployment job
