@@ -8,9 +8,14 @@ dotenv.config()
 const app: Express = express()
 
 // load some environment variables
-const name: string = process.env.APP_NAME === undefined ? 'CHECK ENV VAR "NAME"' : process.env.APP_NAME
-const version: string = process.env.APP_VERSION === undefined ? 'CHECK ENV VAR "VERSION"' : process.env.APP_VERSION
+const name: string = process.env.APP_NAME === undefined ? 'CHECK ENVAR "APP_NAME"' : process.env.APP_NAME
+const version: string = process.env.APP_VERSION === undefined ? 'CHECK ENVAR "APP_VERSION"' : process.env.APP_VERSION
 const port: number = Number.parseInt(process.env.APP_PORT === undefined ? '8080' : process.env.APP_PORT)
+
+// also warn if APP_PORT is not set - we can live without APP_NAME and APP_VERSION, but APP_PORT is required
+if (process.env.APP_PORT === undefined) {
+  console.log('main.ts -> Loading Environment Variables : CHECK ENVAR "APP_PORT" - Defaulting to "8080"')
+}
 
 app.listen(port, () => {
   console.log(`${name} v${version} listening on ${port}`)

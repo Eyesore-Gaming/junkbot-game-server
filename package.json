@@ -1,7 +1,7 @@
 {
   "name": "junkbot-game-server",
   "description": "A Node-based server for the Junkbot game",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "dist/src/main.js",
   "type": "module",
   "scripts": {
