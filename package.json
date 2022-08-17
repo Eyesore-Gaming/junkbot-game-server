@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node dist/src/main.js",
-    "test": "npx jest"
+    "test": "npx jest",
+    "build": "npx tsc"
   },
   "repository": {
     "type": "git",
