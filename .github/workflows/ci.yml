@@ -5,29 +5,37 @@ on:
   push:
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
+    
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: Use Node.js 16.16.0
+
+    - name: Setup Node.js 16.16.0
       uses: actions/setup-node@v1
       with:
         node-version: '16.16.0'
+        
     - name: Install Modules ('npm install')
       run: npm install
-    - name: Run linter (ts-standard)
+
+    - name: Run Linter (ts-standard)
       run: npx ts-standard
-    - name: Execute Tests and Coverage ('npm test')
+
+    - name: Unit Tests and Coverage ('npm test')
       run: npm test
-    - name: Transpile Typescript (tsc)
+
+    - name: Build (tsc)
       run: tsc --build --verbose
+
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
     - name: Sonar Build Breaker
       uses: jkumar19/sonar-build-breaker@v1.0.0
       with:
@@ -35,36 +43,16 @@ jobs:
         sonar_branch: "dev"
         sonar_token: ${{ secrets.SONAR_TOKEN }}
         project_key: "Eyesore-Gaming_junkbot-game-server"
+
     - name: Clean up dist folder (?) 
       run: ls ./dist
+
     - name: Deploy dist to server(s) (?) 
       run: ls ./dist/src
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v1
-        with:
-          node-version: '16.x'
-
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: node-app
-          path: .
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: validate
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
