@@ -10,7 +10,10 @@ export class Config {
   private readonly appName: string
   private readonly appVersion: string
   private readonly appHttpPort: number
+  private readonly nodeEnv: string
+  private readonly logLevel: string
 
+  // using the singleton pattern
   public static getInstance (): Config {
     if (this.instance === undefined) {
       this.instance = new Config()
@@ -20,10 +23,11 @@ export class Config {
   }
 
   constructor () {
-    // this.appName = process.env.APP_NAME === undefined ? 'CHECK ENVAR "APP_NAME"' : process.env.APP_NAME
     this.appName = this.getVar('APP_NAME', 'string')
     this.appVersion = this.getVar('APP_VERSION', 'string')
     this.appHttpPort = this.getVar('HTTP_PORT', 'number')
+    this.logLevel = this.getVar('LOG_LEVEL', 'string')
+    this.nodeEnv = this.getVar('NODE_ENV', 'string')
   }
 
   get AppName (): string {
@@ -36,6 +40,14 @@ export class Config {
 
   get HttpPort (): number {
     return this.appHttpPort
+  }
+
+  get LogLevel (): string {
+    return this.logLevel
+  }
+
+  get NodeEnv (): string {
+    return this.nodeEnv
   }
 
   // this function exists to support negative unit testing

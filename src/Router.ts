@@ -3,12 +3,12 @@ import express from 'express'
 
 export const router = express.Router()
 
+// landing page
+router.get('/', routes.root)
+
 // map the live/ready probes
 router.get('/probes/live', routes.livenessProbe)
 router.get('/probes/ready', routes.readinessProbe)
 
-// landing page
-router.get('/', routes.root)
-
-// all other content
+// all other content, including file requests - will return 404 if no route/file
 router.get('/*', routes.serveFile)

@@ -2,16 +2,17 @@ import express, { Express } from 'express'
 import compression from 'compression'
 import { hostname } from 'os'
 import { Server } from 'http'
-import { SimpleTestClass } from './SimpleTestClass.js'
 import { router } from './router.js'
 import { Config } from './Config.js'
+import { Logger } from './Logger.js'
 
 let httpServer: Server
+const FILE_NAME = 'main.ts' // better than hacking __filename for ES Modules
 const app: Express = express()
 const config: Config = Config.getInstance() // wraps up environment config variables
 
-const stc: SimpleTestClass = new SimpleTestClass('hi', 1, 2)
-console.log(stc.Health)
+const logger = Logger.getInstance()
+logger.info(FILE_NAME, '', `Logger initialized, current log level: ${config.LogLevel}`)
 
 // start the server
 launchExpress()
@@ -25,20 +26,20 @@ function launchExpress (): void {
 
   // and start the httpServer - starts the service
   httpServer = app.listen(config.HttpPort, () => {
-    console.log('main.js', 'launchExpress()', `${config.AppName} ${config.AppVersion} is listening -> http://${hostname()}:${config.HttpPort}`)
+    logger.info(FILE_NAME, 'launchExpress()', `${config.AppName} ${config.AppVersion} is listening -> http://${hostname()}:${config.HttpPort}`)
   })
 }
 
 // Gracefully shutdown the http server
 function doShutdown (): void {
   if (httpServer.listening) {
-    console.log('main.js', 'doShutDown()', 'Stopping httpServer...')
+    logger.info(FILE_NAME, 'doShutDown()', 'Stopping httpServer...')
     httpServer.close()
   } else {
-    console.log('main.js', 'doShutDown()', 'httpServer was not listening.')
+    logger.info(FILE_NAME, 'doShutDown()', 'httpServer was not listening.')
   }
 
-  console.log('main.js', 'doShutDown()', 'Shutdown complete - exiting process... Goodbye.')
+  logger.info(FILE_NAME, 'doShutDown()', 'Shutdown complete - exiting process... Goodbye.')
   process.exit(0)
 }
 
@@ -47,7 +48,7 @@ function doShutdown (): void {
  */
 process.on('SIGINT', function onSigInt () {
   // all done, close the db connection
-  console.log('main.js', 'onSigInt()', 'Got SIGINT - Shutting down...')
+  logger.info(FILE_NAME, 'onSigInt()', 'Got SIGINT - Shutting down...')
   doShutdown()
 })
 
@@ -56,6 +57,6 @@ process.on('SIGINT', function onSigInt () {
  */
 process.on('SIGTERM', function onSigTerm () {
   // all done, close the db connection
-  console.log('main.js', 'onSigTerm()', 'Got SIGTERM - Shutting down...')
+  logger.info(FILE_NAME, 'onSigTerm()', 'Got SIGTERM - Shutting down...')
   doShutdown()
 })

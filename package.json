@@ -10,6 +10,11 @@
     "test": "npx jest",
     "build": "npx tsc"
   },
+  "ts-standard": {
+    "ignore": [
+      "src/logger.ts"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Eyesore-Gaming/junkbot-game-server.git"
