@@ -37,8 +37,20 @@ jobs:
         sonar_token: ${{ secrets.SONAR_TOKEN }}
         project_key: "Eyesore-Gaming_junkbot-game-server"
 
-    - name: TODO -- Create minified dist folder 
-      run: ls ./dist
+    - name: Clear node-modules
+      run: rm -rf ./node_modules
+
+    - name: Reinstall with npm --only=prod
+      run: npm i --only=prod
+
+    - name: Clear non-prod files
+      run: | 
+        rm -rf ./coverage
+        rm -rf ./dist/test
+        rm -rf ./src
+        rm -rf ./test
+        rm ./jest.config
+        rm ./sonar-project.properties
 
     - name: Compress release artifacts (TODO -- Minified dist only)
       run: zip release.zip ./* -r
