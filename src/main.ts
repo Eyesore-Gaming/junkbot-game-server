@@ -27,6 +27,12 @@ app.get('/', (req: Request, res: Response) => {
   res.send(`Hello from ${name}, ${version}`)
 })
 
+// Health check used by Azure to determine app/container availability
+app.get('/health-check', (req: Request, res: Response) => {
+  console.log(`main.ts -> get('/health-check') : req.url='${req.url}'`)
+  res.status(200).send('Health Check: OK')
+})
+
 // Catch all unhandled routes
 app.get('*', (req: Request, res: Response) => {
   console.log(`main.ts -> get('*') : req.url='${req.url}'`)
