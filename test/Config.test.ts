@@ -33,3 +33,10 @@ test('Invalid environment variable return type should throw', () => {
   }
   expect(invalidVarType).toThrowError()
 })
+
+test('Requesting unsupported variable type should throw', () => {
+  function invalidVarTypeRequest (): number {
+    return config.InvalidVarTypeTest
+  }
+  expect(invalidVarTypeRequest).toThrowError()
+})

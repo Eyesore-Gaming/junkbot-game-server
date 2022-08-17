@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config() // load local config from .env file (if local)
+
 /**
  * Simple class to collect and store configuration information for the application
  * Note: dotenv.config() is called from main.ts during app startup
@@ -45,6 +48,11 @@ export class Config {
     return this.getVar('INVALID_NUMERIC_TEST_KEY', 'number')
   }
 
+  // this function exists to support negative unit testing
+  get InvalidVarTypeTest (): number {
+    return this.getVar('INVALID_NUMERIC_TEST_KEY', 'boolean')
+  }
+
   /**
      * Gets and returns the value of the requested environment variable
      * as the given type.
@@ -61,7 +69,7 @@ export class Config {
     }
 
     // we have a value - log the good news
-    console.log(__filename, `getVar(${varName}, ${typeName})`, `${varName}=${val}`)
+    console.log('Config.js', `getVar(${varName}, ${typeName})`, `${varName}=${val}`)
 
     // convert to expect type and return
     switch (typeName) {

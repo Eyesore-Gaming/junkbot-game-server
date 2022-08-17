@@ -42,3 +42,5 @@ export class SimpleTestClass {
     this.mana = newMana
   }
 }
+
+export default SimpleTestClass

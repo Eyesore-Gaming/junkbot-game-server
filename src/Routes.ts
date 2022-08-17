@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
-import { Config } from './Config'
+import { Config } from './Config.js'
 import path from 'path'
 import fs from 'fs'
 
 const config: Config = Config.getInstance() // wraps up environment config variables
 
+// application root
 export const root = (_req: Request, res: Response): void => {
   res.send(`Hello from ${config.AppName}, ${config.AppVersion} on ${config.HttpPort}`)
 }
