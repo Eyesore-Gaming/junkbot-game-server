@@ -11,7 +11,7 @@ export class Config {
   private readonly appVersion: string
   private readonly appHttpPort: number
   private readonly nodeEnv: string
-  private readonly logLevel: string
+  private readonly logLevel: number
 
   // using the singleton pattern
   public static getInstance (): Config {
@@ -42,7 +42,7 @@ export class Config {
     return this.appHttpPort
   }
 
-  get LogLevel (): string {
+  get LogLevel (): number {
     return this.logLevel
   }
 
