@@ -35,4 +35,4 @@ export const serveFile = (req, res) => {
         return res.status(404).send('Page Not Found!');
     }
 };
-//# sourceMappingURL=Routes.js.map
+//# sourceMappingURL=routes.js.map
