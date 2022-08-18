@@ -10,7 +10,7 @@ env:
   HTTP_PORT: "8080"
   INVALID_NUMERIC_TEST_KEY: "NOT_A_NUMBER"
   NODE_ENV: "development"
-  LOG_LEVEL: "trace"
+  LOG_LEVEL: "5"
 
 jobs:
   validate:

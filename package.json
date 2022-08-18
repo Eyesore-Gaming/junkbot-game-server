@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node --es-module-specifier-resolution=node dist/src/main.js",
     "lint": "npx ts-standard",
-    "test": "npx --es-module-specifier-resolution=node jest",
+    "test": "npx --es-module-specifier-resolution=node --silent=false jest",
     "build": "npx tsc",
     "debug": "node --inspect-brk --es-module-specifier-resolution=node dist/src/main.js",
     "watch": "nodemon --es-module-specifier-resolution=node"
