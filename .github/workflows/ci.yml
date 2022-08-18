@@ -12,6 +12,8 @@ env:
   NODE_ENV: "test"
   LOG_LEVEL: "5"
   LOG_COLORS: "false"
+  TEST__INVALID_NUMERIC: "NOT_A_NUMBER"
+  TEST__INVALID_BOOLEAN: "NOT_A_BOOLEAN"  
 
 jobs:
   validate:
