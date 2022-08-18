@@ -36,6 +36,9 @@ jobs:
     - name: Check TSC node-version
       run: tsc --version
 
+    - name: List files in /src
+      run: ls -alF ./src 
+
     - name: Transpile to Javascript (tsc)
       run: npm run build
 
@@ -92,6 +95,9 @@ jobs:
 
       - name: Uncompress release artifacts
         run: unzip release.zip
+
+      - name: Remove the release.zip file
+        run: rm release.zip
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
