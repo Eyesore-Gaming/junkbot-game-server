@@ -1,5 +1,10 @@
+import { Logger } from './Logger'
 import { ISystem } from './ISystem'
 import { ComponentManager } from './ComponentManager'
+
+const logger = Logger.getInstance()
+const FILE_NAME = 'PhysicsSystem.ts'
+
 export class PhysicsSystem implements ISystem {
   name: string
   previousUpdate: number = 0
@@ -15,7 +20,7 @@ export class PhysicsSystem implements ISystem {
     if (transformComponent !== undefined && translationComponent !== undefined && collisionComponent !== undefined) {
       const entityList = componentManager.query(transformComponent, translationComponent, collisionComponent)
       for (const entity of entityList) {
-        console.log(entity)
+        logger.trace(FILE_NAME, 'update(componentManager: ComponentManager, time: number)', entity.toString())
       }
     }
   }

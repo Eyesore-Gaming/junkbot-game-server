@@ -11,12 +11,9 @@ const FILE_NAME = 'main.ts' // better than hacking __filename for ES Modules.
 const app: Express = express()
 const config: Config = Config.getInstance() // wraps up environment config variables
 
+// instantiate and configure logger
 const logger = Logger.getInstance()
-logger.info(FILE_NAME, '', `Logger initialized, current log level: ${logger.getLogLevel()}`)
-
-const logstr: string = logger.getLogLevelName(logger.getLogLevel())
-
-console.log(`LOG_LEVEL NAME IS ${logstr}`)
+logger.setLogLevel(config.LogLevel)
 
 // start the server
 launchExpress()

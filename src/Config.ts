@@ -1,5 +1,8 @@
+import { Logger } from './Logger'
 import dotenv from 'dotenv'
+
 dotenv.config() // load local config from .env file (if local)
+const logger = Logger.getInstance()
 
 /**
  * Simple class to collect and store configuration information for the application
@@ -26,7 +29,7 @@ export class Config {
     this.appName = this.getVar('APP_NAME', 'string')
     this.appVersion = this.getVar('APP_VERSION', 'string')
     this.appHttpPort = this.getVar('HTTP_PORT', 'number')
-    this.logLevel = this.getVar('LOG_LEVEL', 'string')
+    this.logLevel = this.getVar('LOG_LEVEL', 'number')
     this.nodeEnv = this.getVar('NODE_ENV', 'string')
   }
 
@@ -81,7 +84,7 @@ export class Config {
     }
 
     // we have a value - log the good news
-    console.log('Config.js', `getVar(${varName}, ${typeName})`, `${varName}=${val}`)
+    logger.debug('Config.js', `getVar(${varName}, ${typeName})`, `${varName}=${val}`)
 
     // convert to expect type and return
     switch (typeName) {

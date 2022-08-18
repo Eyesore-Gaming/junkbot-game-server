@@ -1,5 +1,5 @@
+// Node:  Do not instantiate Config within logger - it creates an circular dependency
 import path from 'path';
-import { Config } from './Config';
 
 // console output colors 
 enum COLORS {
@@ -28,11 +28,7 @@ export class Logger {
   private FILE_NAME = 'Logger.ts'
 
   // must use getInstance()
-  private constructor() {
-    const config: Config = Config.getInstance();
-    console.log('LL IS: ' + config.LogLevel)
-    this.setLogLevel(config.LogLevel);
-  }
+  private constructor() { }
 
   // singleton instance pattern
   static getInstance() {
@@ -44,8 +40,7 @@ export class Logger {
 
   public setLogLevel(level: LOG_LEVELS) {
     this.logLevel = level;
-    let method = 'setLogLevel';
-    console.log('%s%s : %s : %s : %s : Log Level set to %s%s', COLORS.NONE, getTimeStamp(), 'N/A', fileName(this.FILE_NAME), method, this.getLogLevelName(this.logLevel), COLORS.NONE);
+    this.info(this.FILE_NAME, `setLogLevel(${level})`, `Logger initialized, current level is: ${this.getLogLevelName(level)} `)
   }
 
   public getLogLevel(): LOG_LEVELS {
@@ -53,29 +48,22 @@ export class Logger {
   }
 
   public getLogLevelName(level: number): string {
-    let ret: string = 'NOT_SET'
     switch (level) {
       case LOG_LEVELS.NONE:
-        ret = 'NONE'
-        break;
+        return 'NONE'
       case LOG_LEVELS.ERROR:
-        ret = 'ERROR'
-        break;
+        return 'ERROR'
       case LOG_LEVELS.WARN:
-        ret = 'WARN'
-        break;
+        return 'WARN'
       case LOG_LEVELS.INFO:
-        ret = 'INFO'
-        break;
+        return 'INFO'
       case LOG_LEVELS.DEBUG:
-        ret = 'DEBUG'
-        break;
+        return 'DEBUG'
       case LOG_LEVELS.TRACE:
-        ret = 'TRACE'
-        break;
+        return 'TRACE'
     }
 
-    return ret
+    return 'NO_MATCHING_LOG_LEVEL'
   }
 
   public debug(file: string, method: string, message: string) {

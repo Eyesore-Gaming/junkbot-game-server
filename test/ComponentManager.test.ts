@@ -1,9 +1,16 @@
+import { Logger, LOG_LEVELS } from '../src/Logger'
 import { ComponentManager } from '../src/ComponentManager'
 import { TransformComponent } from '../src/TransformComponent'
 import { TranslationComponent } from '../src/TranslationComponent'
 
 const data = { position: { x: 1, y: 2, z: 3 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
 const newData = { position: { x: 3, y: 4, z: 5 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+
+// manually configure logger from within tests
+const FILE_NAME: string = 'ComponentManager.test.ts'
+const logger: Logger = Logger.getInstance()
+const origLogLevel: number = logger.getLogLevel()
+logger.setLogLevel(LOG_LEVELS.TRACE)
 
 let componentManager = new ComponentManager()
 let transformComponent = new TransformComponent()
@@ -42,7 +49,7 @@ test('Should unsubscribe an entity, with one remaining', () => {
   expect(query.length).toBe(2)
   componentManager.unsubscribeEntity(0, transformComponent)
   query = componentManager.query(transformComponent)
-  console.log(query)
+  logger.trace(FILE_NAME, 'test()', query.toString())
   expect(query.length).toBe(1)
 })
 
@@ -72,4 +79,9 @@ test('return zero results as an empty array', () => {
   const translationComponent = new TranslationComponent()
   const query = componentManager.query(transformComponent, translationComponent)
   expect(query.length).toBe(0)
+})
+
+afterAll(() => {
+  // restore logger's original config level
+  logger.setLogLevel(origLogLevel)
 })
