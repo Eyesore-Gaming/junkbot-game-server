@@ -9,7 +9,7 @@ env:
   APP_VERSION: "0.1.0"
   HTTP_PORT: "8080"
   INVALID_NUMERIC_TEST_KEY: "NOT_A_NUMBER"
-  NODE_ENV: "development"
+  NODE_ENV: "test"
   LOG_LEVEL: "5"
   LOG_COLORS: "false"
 
