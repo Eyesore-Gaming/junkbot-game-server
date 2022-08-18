@@ -20,23 +20,43 @@ test(`Initial config.AppName should be ${appHttpPort}`, () => {
   expect(config.HttpPort).toBe(appHttpPort)
 })
 
-test('Missing environment variable key should throw', () => {
-  function missingVar (): string {
-    return config.MissingVarTest
-  }
-  expect(missingVar).toThrowError()
+test('Initial config.NodeEnv should be test (set by jest)', () => {
+  expect(config.NodeEnv).toBe('test')
 })
 
-test('Invalid environment variable return type should throw', () => {
-  function invalidVarType (): number {
-    return config.InvalidTypeTest
+test('Initial config.LogLevel should be 5', () => {
+  expect(config.LogLevel).toBe(5)
+})
+
+test('Initial config.LogColor should be true', () => {
+  expect(config.LogColor).toBe(true)
+})
+
+test('Invalid boolean variable value should return false', () => {
+  const invalidBoolean = (): boolean => {
+    return config.InvalidBooleanTest
   }
-  expect(invalidVarType).toThrowError()
+
+  expect(invalidBoolean()).toBe(false)
+})
+
+test('Invalid numeric environment variable should throw', () => {
+  expect(() => {
+    const ret: number = config.InvalidVarTypeTest
+    console.log(ret)
+  }).toThrow()
+})
+
+test('Missing environment variable value should throw', () => {
+  expect(() => {
+    const ret: string = config.MissingVarTest
+    console.log(ret)
+  }).toThrow()
 })
 
 test('Requesting unsupported variable type should throw', () => {
-  function invalidVarTypeRequest (): number {
-    return config.InvalidVarTypeTest
-  }
-  expect(invalidVarTypeRequest).toThrowError()
+  expect(() => {
+    const ret: number = config.InvalidTypeTest
+    console.log(ret)
+  }).toThrow()
 })

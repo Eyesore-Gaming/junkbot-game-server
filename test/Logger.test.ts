@@ -78,4 +78,16 @@ test('logger.getLogLevelName(-99) should return string "NO_MATCHING_LOG_LEVEL"',
   expect(logger.getLogLevelName(-99)).toBe('NO_MATCHING_LOG_LEVEL')
 })
 
+test('logger.setColorEnabled(true) should enable logging colors', () => {
+  logger.setColorEnabled(true)
+  logger.warn('filename', 'method', 'This warning SHOULD not be yellow.')
+  expect(logger.getColorEnabled()).toBe(true)
+})
+
+test('logger.setColorEnabled(false) should disable logging colors', () => {
+  logger.setColorEnabled(false)
+  logger.warn('filename', 'method', 'This warning should NOT be yellow.')
+  expect(logger.getColorEnabled()).toBe(false)
+})
+
 afterAll(() => { logger.setLogLevel(origLogLevel) })

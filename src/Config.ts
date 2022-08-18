@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config() // load local config from .env file (if local)
 const logger = Logger.getInstance()
+const FILE_NAME = 'Config.js'
 
 /**
  * Simple class to collect and store configuration information for the application
@@ -15,6 +16,7 @@ export class Config {
   private readonly appHttpPort: number
   private readonly nodeEnv: string
   private readonly logLevel: number
+  private readonly logColor: boolean
 
   // using the singleton pattern
   public static getInstance (): Config {
@@ -29,8 +31,9 @@ export class Config {
     this.appName = this.getVar('APP_NAME', 'string')
     this.appVersion = this.getVar('APP_VERSION', 'string')
     this.appHttpPort = this.getVar('HTTP_PORT', 'number')
-    this.logLevel = this.getVar('LOG_LEVEL', 'number')
     this.nodeEnv = this.getVar('NODE_ENV', 'string')
+    this.logLevel = this.getVar('LOG_LEVEL', 'number')
+    this.logColor = this.getVar('LOG_COLORS', 'boolean')
   }
 
   get AppName (): string {
@@ -45,12 +48,16 @@ export class Config {
     return this.appHttpPort
   }
 
+  get NodeEnv (): string {
+    return this.nodeEnv
+  }
+
   get LogLevel (): number {
     return this.logLevel
   }
 
-  get NodeEnv (): string {
-    return this.nodeEnv
+  get LogColor (): boolean {
+    return this.logColor
   }
 
   // this function exists to support negative unit testing
@@ -60,12 +67,17 @@ export class Config {
 
   // this function exists to support negative unit testing
   get InvalidTypeTest (): number {
-    return this.getVar('INVALID_NUMERIC_TEST_KEY', 'number')
+    return this.getVar('TEST__INVALID_NUMERIC', 'number')
   }
 
   // this function exists to support negative unit testing
   get InvalidVarTypeTest (): number {
-    return this.getVar('INVALID_NUMERIC_TEST_KEY', 'boolean')
+    return this.getVar('TEST__INVALID_NUMERIC', 'array')
+  }
+
+  // this function exists to support negative unit testing
+  get InvalidBooleanTest (): boolean {
+    return this.getVar('TEST__INVALID_BOOLEAN', 'boolean')
   }
 
   /**
@@ -84,7 +96,7 @@ export class Config {
     }
 
     // we have a value - log the good news
-    logger.debug('Config.js', `getVar(${varName}, ${typeName})`, `${varName}=${val}`)
+    logger.debug(FILE_NAME, `getVar(${varName}, ${typeName})`, `${varName}=${val}`)
 
     // convert to expect type and return
     switch (typeName) {
@@ -92,10 +104,18 @@ export class Config {
         return val
       }
       case 'number': {
-        if (val !== undefined && !isNaN(parseInt(val))) {
+        if (!isNaN(parseInt(val))) {
           return parseInt(val)
         } else {
           throw new Error(`Config Error - ${varName} cannot be parsed as ${typeName}}`)
+        }
+      }
+      case 'boolean': {
+        if (val === 'true') {
+          return true
+        } else {
+          logger.error(FILE_NAME, `getVar(${varName}, ${typeName})`, `${varName} is missing or not 'true' - defaulting to false.)`)
+          return false
         }
       }
       default: {
