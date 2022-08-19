@@ -1,7 +1,6 @@
 import { IComponent } from './IComponent'
-import { Vec3 } from './Vec3'
 export class CollisionComponent implements IComponent {
   name: 'collisionComponent'
-  sparseArray: Array<{mesh: Vec3, type: string}> = []
+  sparseArray: Array<{mesh: {length: number, width: number, height: number}, type: string}> | Array<{mesh: {radius: number}, type: string}>= []
   denseArray: number[] = []
 }

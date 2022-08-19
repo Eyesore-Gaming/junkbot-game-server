@@ -1,8 +1,7 @@
 import { IComponent } from './IComponent'
-import { Vec3 } from './Vec3'
 
 export class TranslationComponent implements IComponent {
   name: 'translationComponent'
-  sparseArray: Vec3[] = []
+  sparseArray: Array<{speed: number, velocity: {x: number, y: number, z: number}, target: {x: number, y: number, z: number }}> = []
   denseArray: number[] = []
 }

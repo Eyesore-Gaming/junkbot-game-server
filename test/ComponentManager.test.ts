@@ -42,7 +42,6 @@ test('Should unsubscribe an entity, with one remaining', () => {
   expect(query.length).toBe(2)
   componentManager.unsubscribeEntity(0, transformComponent)
   query = componentManager.query(transformComponent)
-  console.log(query)
   expect(query.length).toBe(1)
 })
 
