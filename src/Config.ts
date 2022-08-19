@@ -1,4 +1,5 @@
 import { Logger } from './Logger'
+import fs from 'fs'
 import dotenv from 'dotenv'
 
 dotenv.config() // load local config from .env file (if local)
@@ -29,7 +30,7 @@ export class Config {
 
   constructor () {
     this.appName = this.getVar('APP_NAME', 'string')
-    this.appVersion = this.getVar('APP_VERSION', 'string')
+    this.appVersion = this.getVersion()
     this.appHttpPort = this.getVar('HTTP_PORT', 'number')
     this.nodeEnv = this.getVar('NODE_ENV', 'string')
     this.logLevel = this.getVar('LOG_LEVEL', 'number')
@@ -78,6 +79,13 @@ export class Config {
   // this function exists to support negative unit testing
   get InvalidBooleanTest (): boolean {
     return this.getVar('TEST__INVALID_BOOLEAN', 'boolean')
+  }
+
+  private readonly getVersion = (): string => {
+    const json = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
+    const version: string = (json.version === undefined ? '0.0.0' : json.version)
+    logger.debug(FILE_NAME, 'getVersion', `APP_VERSION=${version}`)
+    return json.version
   }
 
   /**
