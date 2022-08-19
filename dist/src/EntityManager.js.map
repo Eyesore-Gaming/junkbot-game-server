@@ -1,1 +1,0 @@
-{"version":3,"file":"EntityManager.js","sourceRoot":"./src/","sources":["src/EntityManager.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,aAAa;IAExB;QACE,IAAI,CAAC,QAAQ,GAAG,CAAC,CAAA;IACnB,CAAC;IAED,IAAI,QAAQ;QACV,OAAO,IAAI,CAAC,QAAQ,CAAA;IACtB,CAAC;IAED,SAAS;QACP,IAAI,CAAC,QAAQ,EAAE,CAAA;IAEjB,CAAC;CACF"}

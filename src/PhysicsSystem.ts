@@ -1,5 +1,6 @@
 import { ISystem } from './ISystem'
 import { ComponentManager } from './ComponentManager'
+
 export class PhysicsSystem implements ISystem {
   name: string
   LOW_LIMIT: number = 0.0167

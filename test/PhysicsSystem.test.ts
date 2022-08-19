@@ -27,7 +27,7 @@ test('The physics system correctly moves entity 3.34 unites at 60 fps cap', () =
   expect(transformComponent?.sparseArray[0].position.z).toBe(0)
 })
 
-test('The physics system correctly moves entity 4 units at 30 fps', () => {
+test('The physics system correctly moves entity 6 units at 30 fps', () => {
   const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
   const translation = { speed: 200, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 100, y: 0, z: 0 } }
   const collision = { mesh: { radius: 5 }, type: 'sphere' }

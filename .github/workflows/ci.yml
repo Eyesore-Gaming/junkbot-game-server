@@ -8,9 +8,11 @@ env:
   APP_NAME: "Junkbot Game Server"
   APP_VERSION: "0.1.0"
   HTTP_PORT: "8080"
-  INVALID_NUMERIC_TEST_KEY: "NOT_A_NUMBER"
-  NODE_ENV: "development"
-  LOG_LEVEL: "trace"
+  NODE_ENV: "test"
+  LOG_LEVEL: "5"
+  LOG_COLORS: "true"
+  TEST__INVALID_NUMERIC: "NOT_A_NUMBER"
+  TEST__INVALID_BOOLEAN: "NOT_A_BOOLEAN"  
 
 jobs:
   validate:
@@ -35,6 +37,9 @@ jobs:
 
     - name: Check TSC node-version
       run: tsc --version
+
+    - name: List files in /src
+      run: ls -alF ./src 
 
     - name: Transpile to Javascript (tsc)
       run: npm run build
@@ -92,6 +97,9 @@ jobs:
 
       - name: Uncompress release artifacts
         run: unzip release.zip
+
+      - name: Remove the release.zip file
+        run: rm release.zip
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
