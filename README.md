@@ -34,13 +34,13 @@ _For module versions, see package.json_
     TEST__INVALID_BOOLEAN="NOT_A_BOOLEAN" (edited)
 
 ## TODO
-- Copy this stuff to Trello...
-- Create route handler
+- ~~Copy this stuff to Trello...~~
+- ~~Create route handler~~
 - Add Socket IO (derald?)
 - Add database integration?
-- Github Actions (james)
-- Create env variable class / handler
-- Determine logging solution (could use the one from MazeMaster?)
-- Integrate logging solution
-- Integrate SonarCloud (james)
+- ~~Github Actions (james)~~
+- ~~Create env variable class / handler~~
+- ~~Determine logging solution (could use the one from MazeMaster?)~~
+- ~~Integrate logging solution~~
+- ~~Integrate SonarCloud (james)~~
 
