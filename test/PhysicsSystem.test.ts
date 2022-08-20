@@ -10,7 +10,7 @@ componentManager.components.set('translationComponent', new TranslationComponent
 componentManager.components.set('collisionComponent', new CollisionComponent())
 
 test('The physics system correctly moves entity 3.34 unites at 60 fps cap', () => {
-  const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translation = { speed: 200, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 100, y: 0, z: 0 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const transformComponent = componentManager.components.get('transformComponent')
@@ -26,7 +26,7 @@ test('The physics system correctly moves entity 3.34 unites at 60 fps cap', () =
 })
 
 test('The physics system correctly moves entity 6 units at 30 fps', () => {
-  const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translation = { speed: 200, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 100, y: 0, z: 0 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const transformComponent = componentManager.components.get('transformComponent')
@@ -42,7 +42,7 @@ test('The physics system correctly moves entity 6 units at 30 fps', () => {
 })
 
 test('The physics system correctly moves entity 20 units at 10 fps minimum', () => {
-  const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translation = { speed: 200, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 100, y: 0, z: 0 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const transformComponent = componentManager.components.get('transformComponent')
@@ -58,11 +58,11 @@ test('The physics system correctly moves entity 20 units at 10 fps minimum', () 
 })
 
 test('Entities overlapping move so they are no longer overlapping', () => {
-  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translationA = { speed: 0, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 0, y: 0, z: 0 } }
   const collisionA = { mesh: { radius: 5 }, solid: true, static: false }
 
-  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translationB = { speed: 0, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 0, y: 0, z: 0 } }
   const collisionB = { mesh: { radius: 5 }, solid: true, static: false }
   const physicsSystem = new PhysicsSystem('physicsSystem')
@@ -85,11 +85,11 @@ test('Entities overlapping move so they are no longer overlapping', () => {
 })
 
 test('Entities that are not solid do not shift position when colliding', () => {
-  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translationA = { speed: 0, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 0, y: 0, z: 0 } }
   const collisionA = { mesh: { radius: 5 }, solid: true, static: false }
 
-  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translationB = { speed: 0, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 0, y: 0, z: 0 } }
   const collisionB = { mesh: { radius: 5 }, solid: false, static: false }
   const physicsSystem = new PhysicsSystem('physicsSystem')
@@ -112,11 +112,11 @@ test('Entities that are not solid do not shift position when colliding', () => {
 })
 
 test('An entities that collides with a static entity is the only one shifted away', () => {
-  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translationA = { speed: 0, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 0, y: 0, z: 0 } }
   const collisionA = { mesh: { radius: 5 }, solid: true, static: true }
 
-  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translationB = { speed: 0, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 0, y: 0, z: 0 } }
   const collisionB = { mesh: { radius: 5 }, solid: true, static: false }
   const physicsSystem = new PhysicsSystem('physicsSystem')
@@ -139,22 +139,22 @@ test('An entities that collides with a static entity is the only one shifted awa
 })
 
 test('getLength math works', () => {
-  const data = { position: { x: 4, y: 4, z: 2 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const data = { position: { x: 4, y: 4, z: 2 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const length = physicsSystem.getLength(data.position)
   expect(length).toBe(6)
 })
 
 test('getDistance math works', () => {
-  const data = { position: { x: 1, y: 1, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
-  const data2 = { position: { x: 5, y: 5, z: 3 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const data = { position: { x: 1, y: 1, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
+  const data2 = { position: { x: 5, y: 5, z: 3 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const distance = physicsSystem.getDistance(data.position, data2.position)
   expect(distance).toBe(6)
 })
 
 test('getNormalize math works', () => {
-  const data = { position: { x: 3, y: 1, z: 2 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const data = { position: { x: 3, y: 1, z: 2 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const normal = physicsSystem.getNormalize(data.position)
   expect(normal.x.toFixed(3)).toBe('0.802')
@@ -163,7 +163,7 @@ test('getNormalize math works', () => {
 })
 
 test('getNormalize with x = 0', () => {
-  const data = { position: { x: 0, y: 1, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const data = { position: { x: 0, y: 1, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const normal = physicsSystem.getNormalize(data.position)
   expect(normal.x.toFixed(3)).toBe('0.000')
@@ -172,7 +172,7 @@ test('getNormalize with x = 0', () => {
 })
 
 test('getNormalize with y = 0', () => {
-  const data = { position: { x: 1, y: 0, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const data = { position: { x: 1, y: 0, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const normal = physicsSystem.getNormalize(data.position)
   expect(normal.x.toFixed(3)).toBe('0.707')
@@ -181,7 +181,7 @@ test('getNormalize with y = 0', () => {
 })
 
 test('getNormalize with z = 0', () => {
-  const data = { position: { x: 1, y: 1, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const data = { position: { x: 1, y: 1, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const normal = physicsSystem.getNormalize(data.position)
   expect(normal.x.toFixed(3)).toBe('0.707')
@@ -190,16 +190,16 @@ test('getNormalize with z = 0', () => {
 })
 
 test('getDot math works', () => {
-  const data = { position: { x: 4, y: 3, z: 3 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
-  const data2 = { position: { x: 8, y: 6, z: 6 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const data = { position: { x: 4, y: 3, z: 3 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
+  const data2 = { position: { x: 8, y: 6, z: 6 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const dot = physicsSystem.getDot(data.position, data2.position)
   expect(dot).toBe(68)
 })
 
 test('getCross math works', () => {
-  const data = { position: { x: 2, y: 3, z: 4 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
-  const data2 = { position: { x: 5, y: 6, z: 7 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const data = { position: { x: 2, y: 3, z: 4 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
+  const data2 = { position: { x: 5, y: 6, z: 7 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem')
   const cross = physicsSystem.getCross(data.position, data2.position)
   expect(cross.x).toBe(-3)
@@ -209,10 +209,10 @@ test('getCross math works', () => {
 
 test('Circles do not intersect', () => {
   const physicsSystem = new PhysicsSystem('physicsSystem')
-  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 0, b: 0, c: 0, d: 0 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 0, b: 0, c: 0, d: 0 }, scale: { x: 8, y: 9, z: 10 } }
   const collisionA = { mesh: { radius: 5 }, solid: true, static: false }
 
-  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 0, b: 0, c: 0, d: 0 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 0, b: 0, c: 0, d: 0 }, scale: { x: 8, y: 9, z: 10 } }
   const collisionB = { mesh: { radius: 3 }, solid: true, static: false }
 
   const test = physicsSystem.getCirclesIntersect({ center: transformA.position, radius: collisionA.mesh.radius }, { center: transformB.position, radius: collisionB.mesh.radius })
@@ -225,10 +225,10 @@ test('Circles do not intersect', () => {
 
 test('Circles intersect', () => {
   const physicsSystem = new PhysicsSystem('physicsSystem')
-  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const collisionA = { mesh: { radius: 5 }, solid: true, static: false }
 
-  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
+  const transformB = { position: { x: 8, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const collisionB = { mesh: { radius: 5 }, solid: true, static: false }
 
   const test = physicsSystem.getCirclesIntersect({ center: transformA.position, radius: collisionA.mesh.radius }, { center: transformB.position, radius: collisionB.mesh.radius })

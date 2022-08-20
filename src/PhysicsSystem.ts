@@ -1,5 +1,6 @@
 import { ISystem } from './ISystem'
 import { ComponentManager } from './ComponentManager'
+import { Vec3 } from './Vec3'
 
 export class PhysicsSystem implements ISystem {
   name: string
@@ -47,18 +48,18 @@ export class PhysicsSystem implements ISystem {
     }
   }
 
-  getLength (a: {x: number, y: number, z: number}): number {
+  getLength (a: Vec3): number {
     return Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
   }
 
-  getDistance (a: {x: number, y: number, z: number}, b: {x: number, y: number, z: number}): number {
+  getDistance (a: Vec3, b: Vec3): number {
     const dx = (b.x - a.x) ** 2
     const dy = (b.y - a.y) ** 2
     const dz = (b.z - a.z) ** 2
     return Math.sqrt(dx + dy + dz)
   }
 
-  getNormalize (a: {x: number, y: number, z: number}): {x: number, y: number, z: number} {
+  getNormalize (a: Vec3): Vec3 {
     const length = this.getLength(a)
     if (length === 0) { return { x: 0, y: 0, z: 0 } }
     const cx = (a.x === 0) ? 0 : (a.x / length)
@@ -67,18 +68,18 @@ export class PhysicsSystem implements ISystem {
     return { x: cx, y: cy, z: cz }
   }
 
-  getDot (a: {x: number, y: number, z: number}, b: {x: number, y: number, z: number}): number {
+  getDot (a: Vec3, b: Vec3): number {
     return a.x * b.x + a.y * b.y + a.z * b.z
   }
 
-  getCross (a: {x: number, y: number, z: number}, b: {x: number, y: number, z: number}): {x: number, y: number, z: number} {
+  getCross (a: Vec3, b: Vec3): Vec3 {
     const cx = a.y * b.z - a.z * b.y
     const cy = a.z * b.x - a.x * b.z
     const cz = a.x * b.y - a.y * b.x
     return { x: cx, y: cy, z: cz }
   }
 
-  getCirclesIntersect (a: {center: {x: number, y: number, z: number}, radius: number}, b: {center: {x: number, y: number, z: number}, radius: number}): {collision: boolean, normal: {x: number, y: number, z: number}, depth: number} {
+  getCirclesIntersect (a: {center: Vec3, radius: number}, b: {center: Vec3, radius: number}): {collision: boolean, normal: Vec3, depth: number} {
     const distance = this.getDistance(a.center, b.center)
     const radii = a.radius + b.radius
     if (distance >= radii) {
@@ -92,13 +93,13 @@ export class PhysicsSystem implements ISystem {
     return { collision: true, normal, depth }
   }
 
-  calculateMove (position: {x: number, y: number, z: number}, destination: {x: number, y: number, z: number}, speed: number, deltaTime: number): {x: number, y: number, z: number} {
+  calculateMove (position: Vec3, destination: Vec3, speed: number, deltaTime: number): Vec3 {
     const c = { x: destination.x - position.x, y: destination.y - position.y, z: destination.z - position.z }
     const normal = this.getNormalize(c)
     return { x: normal.x * speed * deltaTime, y: normal.y * speed * deltaTime, z: normal.z * speed * deltaTime }
   }
 
-  addPosition (a: { x: number, y: number, z: number}, b: { x: number, y: number, z: number}): { x: number, y: number, z: number} {
+  addPosition (a: Vec3, b: Vec3): Vec3 {
     return { x: a.x + b.x, y: a.y + b.y, z: a.z + b.z }
   }
 }
