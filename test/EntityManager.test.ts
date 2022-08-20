@@ -1,4 +1,4 @@
-import { EntityManager } from '../src/EntityManager'
+import { EntityManager } from '../src/Entities/EntityManager'
 
 const entityManager = new EntityManager()
 

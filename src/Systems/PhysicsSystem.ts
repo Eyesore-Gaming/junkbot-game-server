@@ -1,46 +1,42 @@
 import { ISystem } from './ISystem'
-import { ComponentManager } from './ComponentManager'
-import { Vec3 } from './Vec3'
+import { ComponentManager } from '../Components/ComponentManager'
+import { Vec3 } from '../IVec3'
 
 export class PhysicsSystem implements ISystem {
   name: string
   LOW_LIMIT: number = 0.0167
   HIGH_LIMIT: number = 0.1
   lastTime: number = new Date().getTime()
-  constructor (name: string) {
+  componentManager: ComponentManager
+  constructor (name: string, componentManager: ComponentManager) {
     this.name = name
+    this.componentManager = componentManager
   }
 
-  update (componentManager: ComponentManager, time: number): void {
+  update (time: number): void {
     let deltaTime = (time - this.lastTime) / 1000 // the divide by 1000 keeps units in seconds. Remove to keep time unit in miliseconds
     if (deltaTime < this.LOW_LIMIT) { deltaTime = this.LOW_LIMIT } else if (deltaTime > this.HIGH_LIMIT) { deltaTime = this.HIGH_LIMIT }
-    const transformComponent = componentManager.components.get('transformComponent')
-    const translationComponent = componentManager.components.get('translationComponent')
-    const collisionComponent = componentManager.components.get('collisionComponent')
+    const transformComponent = this.componentManager.components.get('transformComponent')
+    const translationComponent = this.componentManager.components.get('translationComponent')
+    const collisionComponent = this.componentManager.components.get('collisionComponent')
     if (transformComponent !== undefined && translationComponent !== undefined && collisionComponent !== undefined) {
-      const entityList = componentManager.query(transformComponent, translationComponent)
+      const entityList = this.componentManager.query(transformComponent, translationComponent)
       for (const entity of entityList) {
         translationComponent.sparseArray[entity].velocity = this.calculateMove(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].destination, translationComponent.sparseArray[entity].speed, deltaTime)
         transformComponent.sparseArray[entity].position = this.addPosition(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].velocity)
       }
-      const collisionList: number[] = componentManager.query(translationComponent, collisionComponent)
+      const collisionList: number[] = this.componentManager.query(translationComponent, collisionComponent)
 
       for (const a of collisionList) {
-        if (collisionComponent.sparseArray[a].solid === false) { continue }
+        if (collisionComponent.sparseArray[a].static === true) { continue } // If entity a is static, it shouldn't be moving
         const bodyA = { position: transformComponent.sparseArray[a].position, radius: collisionComponent.sparseArray[a].mesh.radius }
         for (const b of collisionList) {
-          if (collisionComponent.sparseArray[b].solid === false) { continue }
+          if (collisionComponent.sparseArray[b].static === false) { continue } // Only shift position if entity b collided with is static
           const bodyB = { position: transformComponent.sparseArray[b].position, radius: collisionComponent.sparseArray[b].mesh.radius }
           const intersect = this.getCirclesIntersect({ center: bodyA.position, radius: bodyA.radius }, { center: bodyB.position, radius: bodyB.radius })
           if (intersect.collision) {
-            // if the b entity is static, only entity a shifts away
             if (collisionComponent.sparseArray[b].static === true) {
               transformComponent.sparseArray[a].position = this.addPosition(transformComponent.sparseArray[a].position, { x: -intersect.normal.x * intersect.depth, y: -intersect.normal.y * intersect.depth, z: -intersect.normal.z * intersect.depth })
-            } else if (collisionComponent.sparseArray[a].static === true) { // if the a entity is static, only entity b shifts away
-              transformComponent.sparseArray[b].position = this.addPosition(transformComponent.sparseArray[b].position, { x: intersect.normal.x * intersect.depth, y: intersect.normal.y * intersect.depth, z: intersect.normal.z * intersect.depth })
-            } else { // else both entities shift away from each other
-              transformComponent.sparseArray[a].position = this.addPosition(transformComponent.sparseArray[a].position, { x: -intersect.normal.x * intersect.depth / 2, y: -intersect.normal.y * intersect.depth / 2, z: -intersect.normal.z * intersect.depth / 2 })
-              transformComponent.sparseArray[b].position = this.addPosition(transformComponent.sparseArray[b].position, { x: intersect.normal.x * intersect.depth / 2, y: intersect.normal.y * intersect.depth / 2, z: intersect.normal.z * intersect.depth / 2 })
             }
           }
         }

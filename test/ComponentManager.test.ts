@@ -1,6 +1,6 @@
-import { ComponentManager } from '../src/ComponentManager'
-import { TransformComponent } from '../src/TransformComponent'
-import { TranslationComponent } from '../src/TranslationComponent'
+import { ComponentManager } from '../src/Components/ComponentManager'
+import { TransformComponent } from '../src/Components/TransformComponent'
+import { TranslationComponent } from '../src/Components/TranslationComponent'
 
 const data = { position: { x: 1, y: 2, z: 3 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
 const newData = { position: { x: 3, y: 4, z: 5 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { l: 8, w: 9, h: 10 } }
