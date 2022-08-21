@@ -22,7 +22,7 @@ export class PhysicsSystem implements ISystem {
     if (transformComponent !== undefined && translationComponent !== undefined && collisionComponent !== undefined) {
       const entityList = this.componentManager.query(transformComponent, translationComponent)
       for (const entity of entityList) {
-        translationComponent.sparseArray[entity].velocity = this.calculateMove(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].destination, translationComponent.sparseArray[entity].speed, deltaTime)
+        translationComponent.sparseArray[entity].velocity = this.setVelocity(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].destination, translationComponent.sparseArray[entity].speed, deltaTime)
         transformComponent.sparseArray[entity].position = this.addPosition(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].velocity)
       }
       const collisionList: number[] = this.componentManager.query(translationComponent, collisionComponent)
@@ -89,7 +89,7 @@ export class PhysicsSystem implements ISystem {
     return { collision: true, normal, depth }
   }
 
-  calculateMove (position: Vec3, destination: Vec3, speed: number, deltaTime: number): Vec3 {
+  setVelocity (position: Vec3, destination: Vec3, speed: number, deltaTime: number): Vec3 {
     const c = { x: destination.x - position.x, y: destination.y - position.y, z: destination.z - position.z }
     const normal = this.getNormalize(c)
     return { x: normal.x * speed * deltaTime, y: normal.y * speed * deltaTime, z: normal.z * speed * deltaTime }

@@ -1,15 +1,19 @@
 export class EntityManager {
   entities: number
   constructor () {
-    this.entities = 0
+    this.entities = -1
   }
 
   get Entities (): number {
-    return this.entities
+    return this.entities + 1
   }
 
-  addEntity (): void {
-    this.entities++
+  getEntities (): number {
+    return this.entities + 1
+  }
+
+  addEntity (): number {
+    return ++this.entities
     // TODO add an event listener to singal an Entity Added event
   }
 }
