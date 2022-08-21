@@ -1,14 +1,17 @@
 import express, { Express } from 'express'
 import compression from 'compression'
 import { hostname } from 'os'
-import { Server } from 'http'
+import { createServer } from 'http'
+import { Server } from 'socket.io'
 import { Config } from './Config'
 import { Logger } from './Logger'
 import { router } from './router'
-
-let httpServer: Server
+import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from './Events/SocketioEvents'
+import { GameSystem } from './Systems/GameSystem'
 const FILE_NAME = 'main.ts' // better than hacking __filename for ES Modules.
 const app: Express = express()
+const httpServer = createServer(app)
+const io = new Server<ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData>(httpServer)
 
 // load config values (from .env or environment vars)
 const config: Config = Config.getInstance()
@@ -22,6 +25,8 @@ logger.info(FILE_NAME, 'N/A', `Current environment (NODE_ENV) is ${config.NodeEn
 
 // start the server
 launchExpress()
+const gameSystem = new GameSystem('gameSystem', io, logger)
+gameSystem.init()
 
 // launch the express server
 function launchExpress (): void {
@@ -31,7 +36,7 @@ function launchExpress (): void {
   app.use('/', router)
 
   // and start the httpServer - starts the service
-  httpServer = app.listen(config.HttpPort, () => {
+  httpServer.listen(config.HttpPort, () => {
     logger.info(FILE_NAME, 'launchExpress()', `${config.AppName} ${config.AppVersion} is listening -> http://${hostname()}:${config.HttpPort}`)
   })
 }

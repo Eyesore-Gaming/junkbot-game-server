@@ -43,4 +43,6 @@ _For module versions, see package.json_
 - ~~Determine logging solution (could use the one from MazeMaster?)~~
 - ~~Integrate logging solution~~
 - ~~Integrate SonarCloud (james)~~
-
+- Velocity is only calculated once after an entity recieves a new destination position
+- Actors lose their translation component once they reach their destination position
+- Refactor entity recycling outside of PlayerFactory so it can be reused accross Systems

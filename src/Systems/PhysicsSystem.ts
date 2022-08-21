@@ -42,6 +42,7 @@ export class PhysicsSystem implements ISystem {
         }
       }
     }
+    this.lastTime = time
   }
 
   getLength (a: Vec3): number {

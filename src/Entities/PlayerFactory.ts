@@ -17,7 +17,7 @@ export class PlayerFactory implements IEntityFactory {
     const collision = { mesh: { radius: 32 }, solid: true, static: false }
     const player = { socketId, accountId, playerName }
     const render = { mesh: 'circle', texture: 'none', color: '#00FF00' }
-    const command = { command: 'none', target: position }
+    const command = { command: 'none', targetPos: position, targetId: -1 }
     const recyclableComponent = this.componentManager.components.get('recyclableComponent')
     const transformComponent = this.componentManager.components.get('transformComponent')
     const translationComponent = this.componentManager.components.get('translationComponent')
@@ -27,7 +27,6 @@ export class PlayerFactory implements IEntityFactory {
     const commandComponent = this.componentManager.components.get('commandComponent')
     if (recyclableComponent !== undefined && transformComponent !== undefined && translationComponent !== undefined && collisionComponent !== undefined && playerComponent !== undefined &&
        renderComponent !== undefined && commandComponent !== undefined) {
-      // TODO refactor recycling outside of PlayerFactory, as other Factories are going to be using this logic
       if (recyclableComponent.denseArray.length > 0) {
         const id = recyclableComponent.denseArray.pop()
         this.componentManager.components.forEach((value) => {
