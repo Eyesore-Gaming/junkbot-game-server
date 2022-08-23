@@ -15,23 +15,30 @@ export class PhysicsSystem implements ISystem {
   }
 
   update (time: number): void {
+    // Retrieve relevant components and abort if there are zero of any type
+    const transformComponent = this.componentManager.components.get('transformComponent')
+    if (transformComponent === undefined) { return }
+    const translationComponent = this.componentManager.components.get('translationComponent')
+    if (translationComponent === undefined) { return }
+
     let deltaTime = (time - this.lastTime) / 1000 // the divide by 1000 keeps units in seconds. Remove to keep time unit in miliseconds
     if (deltaTime < this.LOW_LIMIT) { deltaTime = this.LOW_LIMIT } else if (deltaTime > this.HIGH_LIMIT) { deltaTime = this.HIGH_LIMIT }
-    const transformComponent = this.componentManager.components.get('transformComponent')
-    const translationComponent = this.componentManager.components.get('translationComponent')
-    const collisionComponent = this.componentManager.components.get('collisionComponent')
-    if (transformComponent !== undefined && translationComponent !== undefined && collisionComponent !== undefined) {
-      const entityList = this.componentManager.query(transformComponent, translationComponent)
-      for (const entity of entityList) {
-        translationComponent.sparseArray[entity].velocity = this.setVelocity(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].destination, translationComponent.sparseArray[entity].speed, deltaTime)
-        transformComponent.sparseArray[entity].position = this.addPosition(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].velocity)
-      }
-      this.handleCollisions(transformComponent, translationComponent, collisionComponent)
-      this.lastTime = time
+
+    const entityList = this.componentManager.query(transformComponent, translationComponent)
+    for (const entity of entityList) {
+      translationComponent.sparseArray[entity].velocity = this.setVelocity(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].destination, translationComponent.sparseArray[entity].speed, deltaTime)
+      transformComponent.sparseArray[entity].position = this.addPosition(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].velocity)
     }
+
+    this.handleCollisions(transformComponent, translationComponent)
+    this.lastTime = time
   }
 
-  handleCollisions (transformComponent: IComponent, translationComponent: IComponent, collisionComponent: IComponent): void {
+  handleCollisions (transformComponent: IComponent, translationComponent: IComponent): void {
+    // Retrieve collision components and abort if there are zero
+    const collisionComponent = this.componentManager.components.get('collisionComponent')
+    if (collisionComponent === undefined) { return }
+
     const collisionList: number[] = this.componentManager.query(translationComponent, collisionComponent)
     for (const a of collisionList) {
       if (collisionComponent.sparseArray[a].static === true) { continue } // If entity a is static, it shouldn't be moving
