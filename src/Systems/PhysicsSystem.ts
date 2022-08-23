@@ -1,6 +1,7 @@
 import { ISystem } from './ISystem'
 import { ComponentManager } from '../Components/ComponentManager'
 import { Vec3 } from '../Datatypes/IVec3'
+import { IComponent } from 'src/Components/IComponent'
 
 export class PhysicsSystem implements ISystem {
   name: string
@@ -25,24 +26,27 @@ export class PhysicsSystem implements ISystem {
         translationComponent.sparseArray[entity].velocity = this.setVelocity(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].destination, translationComponent.sparseArray[entity].speed, deltaTime)
         transformComponent.sparseArray[entity].position = this.addPosition(transformComponent.sparseArray[entity].position, translationComponent.sparseArray[entity].velocity)
       }
-      const collisionList: number[] = this.componentManager.query(translationComponent, collisionComponent)
+      this.handleCollisions(transformComponent, translationComponent, collisionComponent)
+      this.lastTime = time
+    }
+  }
 
-      for (const a of collisionList) {
-        if (collisionComponent.sparseArray[a].static === true) { continue } // If entity a is static, it shouldn't be moving
-        const bodyA = { position: transformComponent.sparseArray[a].position, radius: collisionComponent.sparseArray[a].mesh.radius }
-        for (const b of collisionList) {
-          if (collisionComponent.sparseArray[b].static === false) { continue } // Only shift position if entity b collided with is static
-          const bodyB = { position: transformComponent.sparseArray[b].position, radius: collisionComponent.sparseArray[b].mesh.radius }
-          const intersect = this.getCirclesIntersect({ center: bodyA.position, radius: bodyA.radius }, { center: bodyB.position, radius: bodyB.radius })
-          if (intersect.collision) {
-            if (collisionComponent.sparseArray[b].static === true) {
-              transformComponent.sparseArray[a].position = this.addPosition(transformComponent.sparseArray[a].position, { x: -intersect.normal.x * intersect.depth, y: -intersect.normal.y * intersect.depth, z: -intersect.normal.z * intersect.depth })
-            }
+  handleCollisions (transformComponent: IComponent, translationComponent: IComponent, collisionComponent: IComponent): void {
+    const collisionList: number[] = this.componentManager.query(translationComponent, collisionComponent)
+    for (const a of collisionList) {
+      if (collisionComponent.sparseArray[a].static === true) { continue } // If entity a is static, it shouldn't be moving
+      const bodyA = { position: transformComponent.sparseArray[a].position, radius: collisionComponent.sparseArray[a].mesh.radius }
+      for (const b of collisionList) {
+        if (collisionComponent.sparseArray[b].static === false) { continue } // Only shift position if entity b collided with is static
+        const bodyB = { position: transformComponent.sparseArray[b].position, radius: collisionComponent.sparseArray[b].mesh.radius }
+        const intersect = this.getCirclesIntersect({ center: bodyA.position, radius: bodyA.radius }, { center: bodyB.position, radius: bodyB.radius })
+        if (intersect.collision) {
+          if (collisionComponent.sparseArray[b].static === true) {
+            transformComponent.sparseArray[a].position = this.addPosition(transformComponent.sparseArray[a].position, { x: -intersect.normal.x * intersect.depth, y: -intersect.normal.y * intersect.depth, z: -intersect.normal.z * intersect.depth })
           }
         }
       }
     }
-    this.lastTime = time
   }
 
   getLength (a: Vec3): number {
