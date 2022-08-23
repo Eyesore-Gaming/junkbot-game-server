@@ -1,7 +1,7 @@
 import { ComponentManager } from '../Components/ComponentManager'
 import { EntityManager } from './EntityManager'
 import { IEntityFactory } from './IEntityFactory'
-import { Vec3 } from 'src/IVec3'
+import { Vec3 } from 'src/Datatypes/IVec3'
 
 export class PlayerFactory implements IEntityFactory {
   entityManager: EntityManager

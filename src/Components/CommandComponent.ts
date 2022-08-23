@@ -1,4 +1,4 @@
-import { Vec3 } from 'src/IVec3'
+import { Vec3 } from 'src/Datatypes/IVec3'
 import { IComponent } from './IComponent'
 
 export class CommandComponent implements IComponent {

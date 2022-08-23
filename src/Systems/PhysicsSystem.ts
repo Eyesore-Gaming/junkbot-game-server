@@ -1,6 +1,6 @@
 import { ISystem } from './ISystem'
 import { ComponentManager } from '../Components/ComponentManager'
-import { Vec3 } from '../IVec3'
+import { Vec3 } from '../Datatypes/IVec3'
 
 export class PhysicsSystem implements ISystem {
   name: string

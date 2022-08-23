@@ -1,5 +1,5 @@
 import { IComponent } from './IComponent'
-import { Vec3 } from '../IVec3'
+import { Vec3 } from '../Datatypes/IVec3'
 
 export class TranslationComponent implements IComponent {
   name: 'translationComponent'
