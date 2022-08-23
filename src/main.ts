@@ -6,12 +6,16 @@ import { Server } from 'socket.io'
 import { Config } from './Config'
 import { Logger } from './Logger'
 import { router } from './router'
-import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from './Events/SocketioEvents'
+import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from './Events/SocketEventManager'
 import { GameSystem } from './Systems/GameSystem'
 const FILE_NAME = 'main.ts' // better than hacking __filename for ES Modules.
 const app: Express = express()
 const httpServer = createServer(app)
-const io = new Server<ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData>(httpServer)
+const io = new Server<ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData>(httpServer, {
+  cors: {
+    origin: ['http://localhost:3000', 'https://junkbot-client-server.azurewebsites.net']
+  }
+})
 
 // load config values (from .env or environment vars)
 const config: Config = Config.getInstance()
@@ -25,7 +29,7 @@ logger.info(FILE_NAME, 'N/A', `Current environment (NODE_ENV) is ${config.NodeEn
 
 // start the server
 launchExpress()
-const gameSystem = new GameSystem('gameSystem', io, logger)
+const gameSystem = new GameSystem('gameSystem', io)
 gameSystem.init()
 
 // launch the express server
