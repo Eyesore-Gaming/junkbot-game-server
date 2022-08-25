@@ -6,8 +6,8 @@ import { Server } from 'socket.io'
 import { Config } from './Config'
 import { Logger } from './Logger'
 import { router } from './router'
-import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from './Events/SocketEventManager'
-import { GameSystem } from './Systems/GameSystem'
+import { ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData } from './Events/SocketEventListener'
+import { GameManager } from './Systems/GameManager'
 const FILE_NAME = 'main.ts' // better than hacking __filename for ES Modules.
 const app: Express = express()
 const httpServer = createServer(app)
@@ -29,8 +29,8 @@ logger.info(FILE_NAME, 'N/A', `Current environment (NODE_ENV) is ${config.NodeEn
 
 // start the server
 launchExpress()
-const gameSystem = new GameSystem('gameSystem', io)
-gameSystem.init()
+const gameManager = new GameManager('gameSystem', io)
+gameManager.init()
 
 // launch the express server
 function launchExpress (): void {

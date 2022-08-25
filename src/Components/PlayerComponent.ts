@@ -1,7 +1,7 @@
 import { IComponent } from './IComponent'
 
 export class PlayerComponent implements IComponent {
-  name: 'playerComponent'
-  sparseArray: Array<{ socketId: string, accountId: number, playerName: string}> = []
+  name: 'PlayerComponent'
+  sparseArray: Array<{ socketId: string, accountId: number, playerName: string, sessionStart: number}> = []
   denseArray: number[] = []
 }

@@ -1,63 +1,44 @@
-import { CollisionComponent } from '../src/Components/CollisionComponent'
 import { ComponentManager } from '../src/Components/ComponentManager'
 import { PhysicsSystem } from '../src/Systems/PhysicsSystem'
-import { TransformComponent } from '../src/Components/TransformComponent'
-import { TranslationComponent } from '../src/Components/TranslationComponent'
 
-const componentManager = new ComponentManager()
-componentManager.components.set('transformComponent', new TransformComponent())
-componentManager.components.set('translationComponent', new TranslationComponent())
-componentManager.components.set('collisionComponent', new CollisionComponent())
-
-test('The physics system correctly moves entity 3.34 unites at 60 fps cap', () => {
+test('The physics system correctly moves entity 20 units at 60 fps cap', () => {
+  const componentManager = new ComponentManager()
   const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translation = { speed: 200, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 100, y: 0, z: 0 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
-  const transformComponent = componentManager.components.get('transformComponent')
-  const translationComponent = componentManager.components.get('translationComponent')
-  if (transformComponent !== undefined && translationComponent !== undefined) {
-    componentManager.subscribeEntity(0, [transform, translation], transformComponent, translationComponent)
-  }
-  physicsSystem.lastTime = 0
-  physicsSystem.update(1)
-  expect(transformComponent?.sparseArray[0].position.x).toBe(3.34)
-  expect(transformComponent?.sparseArray[0].position.y).toBe(0)
-  expect(transformComponent?.sparseArray[0].position.z).toBe(0)
+  componentManager.subscribeEntity(0, [transform, translation], componentManager.transformComponent, componentManager.translationComponent)
+  physicsSystem.update(0)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.x).toBe(3.34)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.y).toBe(0)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.z).toBe(0)
 })
 
-test('The physics system correctly moves entity 6 units at 30 fps', () => {
+test('The physics system correctly moves entity 10 units at 30 fps', () => {
+  const componentManager = new ComponentManager()
   const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translation = { speed: 200, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 100, y: 0, z: 0 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
-  const transformComponent = componentManager.components.get('transformComponent')
-  const translationComponent = componentManager.components.get('translationComponent')
-  if (transformComponent !== undefined && translationComponent !== undefined) {
-    componentManager.subscribeEntity(0, [transform, translation], transformComponent, translationComponent)
-  }
-  physicsSystem.lastTime = 0
-  physicsSystem.update(30)
-  expect(transformComponent?.sparseArray[0].position.x).toBe(6)
-  expect(transformComponent?.sparseArray[0].position.y).toBe(0)
-  expect(transformComponent?.sparseArray[0].position.z).toBe(0)
+  componentManager.subscribeEntity(0, [transform, translation], componentManager.transformComponent, componentManager.translationComponent)
+  physicsSystem.update(0.05)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.x).toBe(10)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.y).toBe(0)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.z).toBe(0)
 })
 
 test('The physics system correctly moves entity 20 units at 10 fps minimum', () => {
+  const componentManager = new ComponentManager()
   const transform = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translation = { speed: 200, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 100, y: 0, z: 0 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
-  const transformComponent = componentManager.components.get('transformComponent')
-  const translationComponent = componentManager.components.get('translationComponent')
-  if (transformComponent !== undefined && translationComponent !== undefined) {
-    componentManager.subscribeEntity(0, [transform, translation], transformComponent, translationComponent)
-  }
-  physicsSystem.lastTime = 0
-  physicsSystem.update(1000)
-  expect(transformComponent?.sparseArray[0].position.x).toBe(20)
-  expect(transformComponent?.sparseArray[0].position.y).toBe(0)
-  expect(transformComponent?.sparseArray[0].position.z).toBe(0)
+  componentManager.subscribeEntity(0, [transform, translation], componentManager.transformComponent, componentManager.translationComponent)
+  physicsSystem.update(1)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.x).toBe(20)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.y).toBe(0)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.z).toBe(0)
 })
 
 test('An entity that collides with a static entity is the only one shifted away', () => {
+  const componentManager = new ComponentManager()
   const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const translationA = { speed: 0, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 0, y: 0, z: 0 } }
   const collisionA = { mesh: { radius: 5 }, solid: true, static: true }
@@ -66,25 +47,20 @@ test('An entity that collides with a static entity is the only one shifted away'
   const translationB = { speed: 0, velocity: { x: 0, y: 0, z: 0 }, destination: { x: 0, y: 0, z: 0 } }
   const collisionB = { mesh: { radius: 5 }, solid: true, static: false }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
-  const transformComponent = componentManager.components.get('transformComponent')
-  const translationComponent = componentManager.components.get('translationComponent')
-  const collisionComponent = componentManager.components.get('collisionComponent')
-  if (transformComponent !== undefined && translationComponent !== undefined && collisionComponent !== undefined) {
-    componentManager.subscribeEntity(0, [transformA, translationA, collisionA], transformComponent, translationComponent, collisionComponent)
-    componentManager.subscribeEntity(1, [transformB, translationB, collisionB], transformComponent, translationComponent, collisionComponent)
-  }
-  physicsSystem.lastTime = 0
+  componentManager.subscribeEntity(0, [transformA, translationA, collisionA], componentManager.transformComponent, componentManager.translationComponent, componentManager.collisionComponent)
+  componentManager.subscribeEntity(1, [transformB, translationB, collisionB], componentManager.transformComponent, componentManager.translationComponent, componentManager.collisionComponent)
   physicsSystem.update(1)
-  expect(transformComponent?.sparseArray[0].position.x).toBe(0)
-  expect(transformComponent?.sparseArray[0].position.y).toBe(0)
-  expect(transformComponent?.sparseArray[0].position.z).toBe(0)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.x).toBe(0)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.y).toBe(0)
+  expect(componentManager.transformComponent.sparseArray[0]?.position.z).toBe(0)
 
-  expect(transformComponent?.sparseArray[1].position.x).toBe(10)
-  expect(transformComponent?.sparseArray[1].position.y).toBe(0)
-  expect(transformComponent?.sparseArray[1].position.z).toBe(0)
+  expect(componentManager.transformComponent.sparseArray[1]?.position.x).toBe(10)
+  expect(componentManager.transformComponent.sparseArray[1]?.position.y).toBe(0)
+  expect(componentManager.transformComponent.sparseArray[1]?.position.z).toBe(0)
 })
 
 test('getLength math works', () => {
+  const componentManager = new ComponentManager()
   const data = { position: { x: 4, y: 4, z: 2 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
   const length = physicsSystem.getLength(data.position)
@@ -92,6 +68,7 @@ test('getLength math works', () => {
 })
 
 test('getDistance math works', () => {
+  const componentManager = new ComponentManager()
   const data = { position: { x: 1, y: 1, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const data2 = { position: { x: 5, y: 5, z: 3 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
@@ -100,6 +77,7 @@ test('getDistance math works', () => {
 })
 
 test('getNormalize math works', () => {
+  const componentManager = new ComponentManager()
   const data = { position: { x: 3, y: 1, z: 2 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
   const normal = physicsSystem.getNormalize(data.position)
@@ -109,6 +87,7 @@ test('getNormalize math works', () => {
 })
 
 test('getNormalize with x = 0', () => {
+  const componentManager = new ComponentManager()
   const data = { position: { x: 0, y: 1, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
   const normal = physicsSystem.getNormalize(data.position)
@@ -118,6 +97,7 @@ test('getNormalize with x = 0', () => {
 })
 
 test('getNormalize with y = 0', () => {
+  const componentManager = new ComponentManager()
   const data = { position: { x: 1, y: 0, z: 1 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
   const normal = physicsSystem.getNormalize(data.position)
@@ -127,6 +107,7 @@ test('getNormalize with y = 0', () => {
 })
 
 test('getNormalize with z = 0', () => {
+  const componentManager = new ComponentManager()
   const data = { position: { x: 1, y: 1, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
   const normal = physicsSystem.getNormalize(data.position)
@@ -136,6 +117,7 @@ test('getNormalize with z = 0', () => {
 })
 
 test('getDot math works', () => {
+  const componentManager = new ComponentManager()
   const data = { position: { x: 4, y: 3, z: 3 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const data2 = { position: { x: 8, y: 6, z: 6 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
@@ -144,6 +126,7 @@ test('getDot math works', () => {
 })
 
 test('getCross math works', () => {
+  const componentManager = new ComponentManager()
   const data = { position: { x: 2, y: 3, z: 4 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const data2 = { position: { x: 5, y: 6, z: 7 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
@@ -154,6 +137,7 @@ test('getCross math works', () => {
 })
 
 test('Circles do not intersect', () => {
+  const componentManager = new ComponentManager()
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
   const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 0, b: 0, c: 0, d: 0 }, scale: { x: 8, y: 9, z: 10 } }
   const collisionA = { mesh: { radius: 5 }, solid: true, static: false }
@@ -170,6 +154,7 @@ test('Circles do not intersect', () => {
 })
 
 test('Circles intersect', () => {
+  const componentManager = new ComponentManager()
   const physicsSystem = new PhysicsSystem('physicsSystem', componentManager)
   const transformA = { position: { x: 0, y: 0, z: 0 }, rotation: { a: 4, b: 5, c: 6, d: 7 }, scale: { x: 8, y: 9, z: 10 } }
   const collisionA = { mesh: { radius: 5 }, solid: true, static: false }
